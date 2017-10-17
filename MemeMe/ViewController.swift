@@ -54,7 +54,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         bottomField.defaultTextAttributes = memeTextAttributes
         bottomField.textAlignment = .center
         bottomField.delegate = self
-        shareButton.isEnabled = false
+        
+        if imageView.image == nil {
+            shareButton.isEnabled = false
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -94,6 +97,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         dismiss(animated: true, completion: {self.shareButton.isEnabled = true})
     }
+    
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         switch textField {
@@ -158,16 +162,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func generateMeme() -> UIImage {
         
+        // Hide Toolbars and Navbar
         topToolbar.isHidden = true
         bottomToolbar.isHidden = true
         navigationController?.navigationBar.isHidden = true
         
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        // Snap Meme
+        UIGraphicsBeginImageContext(imageView.frame.size)
+        view.drawHierarchy(in: view.frame.offsetBy(dx: 0, dy: -imageView.frame.origin
+            .y), afterScreenUpdates: true)
         let meme:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        
+        // Show Toolbars and Nav
         topToolbar.isHidden = false
         bottomToolbar.isHidden = false
         navigationController?.navigationBar.isHidden = false
