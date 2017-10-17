@@ -14,10 +14,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--Meme Editor View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MemeEditorViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,9 +28,9 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZUT-s9-E0i">
                                 <rect key="frame" x="0.0" y="692" width="414" height="44"/>
                                 <items>
-                                    <barButtonItem style="plain" systemItem="camera" id="V8O-ce-smZ">
+                                    <barButtonItem tag="1" style="plain" systemItem="camera" id="V8O-ce-smZ">
                                         <connections>
-                                            <action selector="photoPickerFromCamera:" destination="BYZ-38-t0r" id="tv7-Bk-QVY"/>
+                                            <action selector="photoPicker:" destination="BYZ-38-t0r" id="ta2-sH-5cs"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="5f4-IX-ZCB"/>
@@ -41,7 +41,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <state key="normal" title="Album"/>
                                             <connections>
-                                                <action selector="photoPickerFromAlbum:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FZL-qf-xl6"/>
+                                                <action selector="photoPicker:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vgj-yG-Qle"/>
                                             </connections>
                                         </button>
                                     </barButtonItem>

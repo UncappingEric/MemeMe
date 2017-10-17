@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeEditorViewController.swift
 //  MemeMe
 //
 //  Created by Eric Cajuste on 10/10/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var topField: UITextField!
@@ -19,22 +19,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     
     var savedMeme: Meme?
-    
-    //MARK: Meme Structure
-    
-    struct Meme {
-        var top: String
-        var bottom: String
-        var original: UIImage
-        var meme: UIImage
-        
-        init(top: String, bottom: String, original: UIImage, meme: UIImage) {
-            self.top = top
-            self.bottom = bottom
-            self.original = original
-            self.meme = meme
-        }
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -48,16 +32,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             NSAttributedStringKey.font.rawValue: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
             NSAttributedStringKey.strokeWidth.rawValue: -3]
         
-        topField.defaultTextAttributes = memeTextAttributes
-        topField.textAlignment = .center
-        topField.delegate = self
-        bottomField.defaultTextAttributes = memeTextAttributes
-        bottomField.textAlignment = .center
-        bottomField.delegate = self
+        configureTextField(topField, memeTextAttributes)
+        configureTextField(bottomField, memeTextAttributes)
         
         if imageView.image == nil {
             shareButton.isEnabled = false
         }
+    }
+    
+    func configureTextField(_ field: UITextField, _ attributes: [String:Any]) {
+        field.defaultTextAttributes = attributes
+        field.textAlignment = .center
+        field.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,17 +59,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     // MARK: PhotoPicker Methods
     
-    @IBAction func photoPickerFromAlbum(_ sender: Any) {
+    @IBAction func photoPicker(_ sender: Any) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    @IBAction func photoPickerFromCamera(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
+        imagePicker.sourceType = cameraButton.tag == (sender as! UIButton).tag ? .camera : .photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
     
@@ -100,17 +79,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        switch textField {
-        case topField:
+        if textField == topField {
             unsubscribeFromKeyboardNotifications()
-            if textField.text == "TOP" {
-                textField.text = ""
-            }
-        default:
-            if textField.text == "BOTTOM" {
-                textField.text = ""
-            }
         }
+        
+        textField.text = ""
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
